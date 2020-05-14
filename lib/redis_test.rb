@@ -59,7 +59,8 @@ module RedisTest
       redis_options_str = redis_options.map { |k, v| "#{k} #{v}" }.join('\n')
 
       fork do
-        echo_command = mac? ? 'echo' : 'echo -e'
+        system_echo = "$(which echo)"
+        echo_command = mac? ? system_echo : "#{system_echo} -e"
         system "#{echo_command} '#{redis_options_str}' | redis-server -"
       end
 
